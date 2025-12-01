@@ -1,0 +1,34 @@
+{
+  "name": "project_enovote_api",
+  "version": "1.0.0",
+  "description": "An online voting platform for secure, web friendly digital voting system built for Nigerians to cast their votes safely from anywhere, and see the election results in real time",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "nodemon app"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://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@github.com/Mattsun5/project_enovote_api.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/Mattsun5/project_enovote_api/issues"
+  },
+  "homepage": "https://github.com/Mattsun5/project_enovote_api#readme",
+  "dependencies": {
+    "bcrypt": "^6.0.0",
+    "cookie-parser": "^1.4.7",
+    "cors": "^2.8.5",
+    "dotenv": "^17.2.3",
+    "express": "^5.1.0",
+    "helmet": "^8.1.0",
+    "morgan": "^1.10.1",
+    "nodemailer": "^7.0.11",
+    "nodemon": "^3.1.11",
+    "pg": "^8.16.3"
+  }
+}
