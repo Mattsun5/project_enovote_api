@@ -14,12 +14,14 @@
   "keywords": [],
   "author": "",
   "license": "ISC",
-  "type": "commonjs",
+  "type": "module",
   "bugs": {
     "url": "https://github.com/Mattsun5/project_enovote_api/issues"
   },
   "homepage": "https://github.com/Mattsun5/project_enovote_api#readme",
   "dependencies": {
+    "@prisma/adapter-pg": "^7.1.0",
+    "@prisma/client": "^7.1.0",
     "bcrypt": "^6.0.0",
     "cookie-parser": "^1.4.7",
     "cors": "^2.8.5",
@@ -28,7 +30,15 @@
     "helmet": "^8.1.0",
     "morgan": "^1.10.1",
     "nodemailer": "^7.0.11",
-    "nodemon": "^3.1.11",
     "pg": "^8.16.3"
+  },
+  "devDependencies": {
+    "@types/node": "^24.10.1",
+    "@types/pg": "^8.15.6",
+    "nodemon": "^3.1.11",
+    "prisma": "^7.1.0",
+    "ts-node": "^10.9.2",
+    "tsx": "^4.21.0",
+    "typescript": "^5.9.3"
   }
 }
