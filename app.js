@@ -25,11 +25,12 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use(helmet());
 
 // CORS configuration
-app.use(cors({
+app.use(cors(
+    // {
 //   origin: 'https://example.com',
-  methods: ['GET', 'POST']
-//   allowedHeaders: ['Content-Type', 'Authorization']
-}));
+//   methods: ['GET', 'POST']
+//   allowedHeaders: ['Content-Type', 'Authorization']}
+));
 
 // routes
 app.use("/users", userRouter);

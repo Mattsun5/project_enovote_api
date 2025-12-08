@@ -7,13 +7,13 @@ datasource db {
   provider = "postgresql"
 }
 
-model Admin {
+model admin {
   id        Int      @id @default(autoincrement())
   createdAt DateTime @default(now())
-  User      User     @relation(fields: [id], references: [id])
+  user      user     @relation(fields: [id], references: [id])
 }
 
-model User {
+model user {
   id        Int      @id @default(autoincrement())
   email     String   @unique
   f_name    String?
@@ -22,5 +22,14 @@ model User {
   password  String
   status    String?
   createdAt DateTime @default(now())
-  Admin     Admin?
+  admin     admin?
+  refresh_token refresh_token?
+}
+
+model refresh_token {
+  id         Int      @id @default(autoincrement())
+  token      String   @unique
+  user       user     @relation(fields: [id], references: [id])
+  createdAt  DateTime @default(now())
+  expiresAt  DateTime
 }
