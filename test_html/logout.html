@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Logout | EnoVote</title>
+<style>
+    body {
+        margin: 0;
+        font-family: Arial, sans-serif;
+        background: #f7f7f7;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+    }
+
+    .box {
+        background: white;
+        padding: 28px;
+        width: 360px;
+        border-radius: 12px;
+        text-align: center;
+        box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+    }
+
+    h2 {
+        margin-bottom: 15px;
+        color: #333;
+    }
+
+    p {
+        color: #555;
+        margin-bottom: 20px;
+    }
+
+    button {
+        padding: 12px 20px;
+        background: #ff3b30;
+        color: white;
+        border: none;
+        border-radius: 6px;
+        cursor: pointer;
+        width: 100%;
+        font-size: 16px;
+        font-weight: bold;
+    }
+
+    button:hover {
+        background: #e62e23;
+    }
+
+    a {
+        display: block;
+        margin-top: 15px;
+        color: #0a84ff;
+        text-decoration: none;
+    }
+</style>
+</head>
+<body>
+
+<div class="box">
+    <h2>Logout</h2>
+    <p>Click the button below to safely log out of EnoVote.</p>
+
+    <button onclick="logout()">Log Out</button>
+
+    <a href="auth.html">Back to Login</a>
+</div>
+
+<script>
+    const API = "http://localhost:3000"; // change if needed
+
+    async function logout() {
+        const res = await fetch(`${API}/auth/logout`, {
+            method: "POST",
+            credentials: "include"  // IMPORTANT to send cookies
+        });
+
+        if (res.ok) {
+            alert("Logged out successfully");
+            window.location.href = "auth.html"; // redirect to login
+        } else {
+            alert("Logout failed");
+        }
+    }
+</script>
+
+</body>
+</html>

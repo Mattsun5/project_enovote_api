@@ -1,11 +1,15 @@
 import express from "express";
-import userRouter from "./routes/users.js";
+import "dotenv/config";
 import cors from "cors";
 import helmet from "helmet";
 import cookieParser from "cookie-parser";
 import logger from "morgan";
 import path from "path";
 import { fileURLToPath } from 'url';
+
+import userRouter from "./routes/users.js";
+import authRoutes from "./routes/auth.routes.js";
+// import voteRoutes from "./routes/vote.routes.js";
 
 // initializing __filename and __dirname for "type" : "module"
 const __filename = fileURLToPath(import.meta.url);
@@ -22,21 +26,28 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 // Security middleware
-app.use(helmet());
+// app.use(helmet());
 
 // CORS configuration
-app.use(cors(
-    // {
-//   origin: 'https://example.com',
-//   methods: ['GET', 'POST']
-//   allowedHeaders: ['Content-Type', 'Authorization']}
-));
+// app.use(
+//   cors({
+//     origin: process.env.CLIENT_URL || "*",
+//     credentials: true,
+//   })
+// );
+app.use(
+  cors({
+    origin: "http://127.0.0.1:5500" || "*",
+    credentials: true
+  })
+);
 
 // routes
 app.use("/users", userRouter);
+app.use("/auth", authRoutes);
 
 // 404 Middleware 
-app.use((req, res, next) => {
+app.use((req, res) => {
   res.status(404).send('404 Not Found: The requested resource does not exist');
 });
 

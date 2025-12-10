@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>EnoVote | Auth</title>
+<style>
+    body {
+        margin: 0;
+        font-family: Arial, sans-serif;
+        background: #f4f4f4;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+    }
+
+    .container {
+        width: 360px;
+        background: #fff;
+        padding: 24px;
+        border-radius: 12px;
+        box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+    }
+
+    h2 {
+        text-align: center;
+        margin-bottom: 20px;
+        color: #222;
+    }
+
+    input {
+        width: 100%;
+        padding: 12px;
+        margin-bottom: 14px;
+        border-radius: 6px;
+        border: 1px solid #ccc;
+    }
+
+    button {
+        width: 100%;
+        padding: 12px;
+        background: #0a84ff;
+        border: none;
+        color: white;
+        border-radius: 6px;
+        cursor: pointer;
+        font-size: 16px;
+        font-weight: bold;
+    }
+
+    button:hover {
+        background: #006edc;
+    }
+
+    .toggle {
+        text-align: center;
+        margin-top: 15px;
+        cursor: pointer;
+        color: #0a84ff;
+    }
+
+    .hidden { display: none; }
+</style>
+</head>
+<body>
+
+<div class="container">
+
+    <!-- LOGIN FORM -->
+    <div id="login-box">
+        <h2>Login</h2>
+        <input type="email" id="login-email" placeholder="Email" required />
+        <input type="password" id="login-password" placeholder="Password" required />
+        <button onclick="login()">Log In</button>
+
+        <div class="toggle" onclick="showSignup()">
+            Don't have an account? Sign up
+        </div>
+
+        <div class="box">
+    <h2>Logout</h2>
+    <p>Click the button below to safely log out of EnoVote.</p>
+
+    <button onclick="logout()">Log Out</button>
+
+    <a href="auth.html">Back to Login</a>
+</div>
+
+    </div>
+
+    <!-- SIGNUP FORM -->
+    <div id="signup-box" class="hidden">
+        <h2>Create Account</h2>
+        <input type="text" id="signup-fname" placeholder="First Name" />
+        <input type="text" id="signup-lname" placeholder="Last Name" />
+        <input type="email" id="signup-email" placeholder="Email" required />
+        <input type="password" id="signup-password" placeholder="Password" required />
+        <button onclick="signup()">Sign Up</button>
+
+        <div class="toggle" onclick="showLogin()">
+            Already have an account? Log in
+        </div>
+    </div>
+
+</div>
+
+<script>
+    const API = "http://localhost:3000"; // change if needed
+
+    function showSignup() {
+        document.getElementById("login-box").classList.add("hidden");
+        document.getElementById("signup-box").classList.remove("hidden");
+    }
+
+    function showLogin() {
+        document.getElementById("signup-box").classList.add("hidden");
+        document.getElementById("login-box").classList.remove("hidden");
+    }
+
+    async function signup() {
+        const data = {
+            f_name: document.getElementById("signup-fname").value,
+            l_name: document.getElementById("signup-lname").value,
+            email: document.getElementById("signup-email").value,
+            password: document.getElementById("signup-password").value
+        };
+
+        const res = await fetch(`${API}/users`, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(data)
+        });
+
+        const result = await res.json();
+        alert(result.message || JSON.stringify(result));
+    }
+
+    async function login() {
+        const data = {
+            email: document.getElementById("login-email").value,
+            password: document.getElementById("login-password").value
+        };
+
+        const res = await fetch(`${API}/auth/login`, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(data),
+            credentials: "include" // important for cookies!
+        });
+
+        const result = await res.json();
+        alert(result.message || JSON.stringify(result));
+
+        if (res.ok) {
+            console.log("User logged in:", result);
+        }
+    }
+
+    async function logout() {
+        const res = await fetch(`${API}/auth/logout`, {
+            method: "POST",
+            credentials: "include"  // IMPORTANT to send cookies
+        });
+        console.log(document.cookies);
+        if (res.ok) {
+            alert("Logged out successfully");
+            // window.location.href = "auth.html"; // redirect to login
+        } else {
+            alert("Logout failed");
+        }
+    }
+</script>
+
+</body>
+</html>

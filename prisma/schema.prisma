@@ -10,7 +10,10 @@ datasource db {
 model admin {
   id        Int      @id @default(autoincrement())
   createdAt DateTime @default(now())
-  user      user     @relation(fields: [id], references: [id])
+  userId    Int      @unique
+  user      user     @relation(fields: [userId], references: [id])
+  election election?
+  candidate  candidate?
 }
 
 model user {
@@ -24,12 +27,54 @@ model user {
   createdAt DateTime @default(now())
   admin     admin?
   refresh_token refresh_token?
+  candidate  candidate?
+  election_vote election_vote?
 }
 
 model refresh_token {
   id         Int      @id @default(autoincrement())
   token      String   @unique
-  user       user     @relation(fields: [id], references: [id])
+  userId    Int      @unique
+  user      user     @relation(fields: [userId], references: [id])
   createdAt  DateTime @default(now())
   expiresAt  DateTime
+}
+
+model election {
+  id         Int      @id @default(autoincrement())
+  office_title      String?
+  eligible_state    String?
+  startAt           DateTime
+  endAt             DateTime
+  adminId     Int     @unique
+  admin      admin     @relation(fields: [adminId], references: [id])
+  createdAt  DateTime @default(now())
+  candidate  candidate?
+  election_vote election_vote?
+}
+
+model candidate {
+  id         Int      @id @default(autoincrement())
+  electionId Int      @unique
+  userId    Int      @unique
+  manifesto String?
+  party     String?
+  avatar    String?
+  approvedBy  Int   @unique
+  user      user     @relation(fields: [userId], references: [id])
+  election  election     @relation(fields: [electionId], references: [id])
+  admin  admin     @relation(fields: [approvedBy], references: [id])
+  createdAt  DateTime @default(now())
+  election_vote election_vote?
+}
+
+model election_vote {
+  voteReceipt         String      @id
+  userId     Int     @unique
+  electionId     Int     @unique
+  candidateId     Int     @unique
+  user      user     @relation(fields: [userId], references: [id])
+  election      election     @relation(fields: [electionId], references: [id])
+  candidate      candidate     @relation(fields: [candidateId], references: [id])
+  createdAt  DateTime @default(now())
 }
