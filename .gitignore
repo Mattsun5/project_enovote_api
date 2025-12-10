@@ -1,7 +1,4 @@
 # Logs
-prisma
-/prisma
-./prisma
 logs
 *.log
 npm-debug.log*
