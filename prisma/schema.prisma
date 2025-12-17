@@ -12,8 +12,8 @@ model admin {
   createdAt DateTime @default(now())
   userId    Int      @unique
   user      user     @relation(fields: [userId], references: [id])
-  election election?
-  candidate  candidate?
+  election election[]
+  candidate  candidate[]
 }
 
 model user {
@@ -28,7 +28,7 @@ model user {
   admin     admin?
   refresh_token refresh_token?
   candidate  candidate?
-  election_vote election_vote?
+  election_vote election_vote[]
 }
 
 model refresh_token {
@@ -46,35 +46,38 @@ model election {
   eligible_state    String?
   startAt           DateTime
   endAt             DateTime
-  adminId     Int     @unique
+  adminId     Int     
   admin      admin     @relation(fields: [adminId], references: [id])
   createdAt  DateTime @default(now())
-  candidate  candidate?
-  election_vote election_vote?
+  candidate  candidate[]
+  election_vote election_vote[]
 }
 
 model candidate {
   id         Int      @id @default(autoincrement())
-  electionId Int      @unique
+  electionId Int      
   userId    Int      @unique
   manifesto String?
   party     String?
   avatar    String?
-  approvedBy  Int   @unique
+  approvedBy  Int   
   user      user     @relation(fields: [userId], references: [id])
   election  election     @relation(fields: [electionId], references: [id])
   admin  admin     @relation(fields: [approvedBy], references: [id])
   createdAt  DateTime @default(now())
-  election_vote election_vote?
+  election_vote election_vote[]
+  @@unique([userId, electionId])
 }
 
 model election_vote {
-  voteReceipt         String      @id
-  userId     Int     @unique
-  electionId     Int     @unique
-  candidateId     Int     @unique
+  id          Int      @id @default(autoincrement())
+  voteReceipt String   @unique
+  userId     Int     
+  electionId     Int     
+  candidateId     Int     
   user      user     @relation(fields: [userId], references: [id])
   election      election     @relation(fields: [electionId], references: [id])
   candidate      candidate     @relation(fields: [candidateId], references: [id])
   createdAt  DateTime @default(now())
+  @@unique([userId, electionId]) 
 }

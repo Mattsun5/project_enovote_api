@@ -21,8 +21,9 @@ async function getUser (req, res) {
     }
 
     res.status(201).json({
-      message: "User fetched successfully",
-      data: user
+      // message: "User fetched successfully",
+      success: true,
+      user: req.user
     });
 
   } catch (err) {

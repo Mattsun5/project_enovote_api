@@ -42,7 +42,9 @@ export async function login(req, res) {
 
   return res.json({
     message: "Logged in",
-    user: safe
-    // token: accessToken
+    success: true,
+    user: safe,
+    accessToken,
+    refreshToken: refreshToken.token,
   });
 }

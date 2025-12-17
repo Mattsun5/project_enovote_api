@@ -35,8 +35,9 @@ export async function refresh(req, res) {
     });
 
     res.json({
-      message: "Token refreshed"
-    //   token: newAccessToken
+      message: "Token refreshed",
+      success: true,
+      token: newAccessToken
     });
 
   } catch (err) {

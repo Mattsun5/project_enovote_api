@@ -8,13 +8,18 @@ async function generateRefreshToken(userId) {
   const decoded = jwt.decode(token);
   const expiresAt = new Date(decoded.exp * 1000);
 
-  await prisma.refresh_token.create({
-    data: {
-      userId,
-      token,
-      expiresAt
-    }
+  await prisma.refresh_token.upsert({
+    where: { userId },
+    update: { token },
+    create: { userId, token, expiresAt },
   });
+  // await prisma.refresh_token.create({
+  //   data: {
+  //     userId,
+  //     token,
+  //     expiresAt
+  //   }
+  // });
 
   return token;
 }

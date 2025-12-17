@@ -13,6 +13,8 @@ function signRefreshToken(payload) {
 }
 
 function verifyAccessToken(token) {
+  // console.log(jwt.verify(token, process.env.JWT_SECRET));
+  // console.log(token);
   return jwt.verify(token, process.env.JWT_SECRET);
 }
 
