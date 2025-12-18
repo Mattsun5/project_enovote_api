@@ -24,11 +24,24 @@ model user {
   role      String   @default("user") // "user" or "admin"
   password  String
   status    String?
+  avatar    String?
   createdAt DateTime @default(now())
   admin     admin?
   refresh_token refresh_token?
   candidate  candidate?
   election_vote election_vote[]
+}
+
+model email_otp {
+  id        Int      @id @default(autoincrement())
+  email     String
+  otp       String
+  attempts    Int      @default(0)
+  expiresAt DateTime
+  lastSentAt  DateTime @default(now())
+  createdAt DateTime @default(now())
+
+  @@index([email])
 }
 
 model refresh_token {

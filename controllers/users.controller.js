@@ -1,4 +1,5 @@
-import { prisma } from '../lib/prisma.js'
+import { prisma } from '../lib/prisma.js';
+import { sendOtp } from "../controllers/otp.controller.js";
 import bcrypt from "bcrypt";
 
 const SALT_ROUNDS = 10;
@@ -120,16 +121,28 @@ async function createNewUser (req, res) {
         password: hashed,
         f_name,
         l_name,
-        role: "user"
-      }
+        role: "user",
+        status: "pending"
+      },
     });
 
+    await sendOtp(email);
+
+    return res.status(201).json({
+      newUser,
+      success: true,
+      message: "Registration successful. OTP sent to email.",
+    });
     // password already secured globally in lib/prisma
     // const { password: _, ...safe } = newUser;
-    res.status(201).json(newUser);
+    // res.status(201).json({
+    //   newUser,
+    //   success: true
+    // });
 
   } catch (err) {
-    res.status(500).json({ message: err.message });
+    console.log(err);
+    res.status(500).json({ message: "Registration failed" });
   }
 }
 

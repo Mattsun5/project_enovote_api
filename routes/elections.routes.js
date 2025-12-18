@@ -12,7 +12,7 @@ import { authenticate } from "../middlewares/auth.js";
 import { getLiveResults } from "../controllers/results.controller.js";
 const router = express.Router();
 
-router.post("/:id", createElection);
+router.post("/:id", authenticate, createElection);
 router.get("/", authenticate, allElections);
 router.get("/:id",authenticate, getElection);
 router.post("/:id/vote",authenticate, vote);
