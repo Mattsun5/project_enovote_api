@@ -1,15 +1,33 @@
 import { revokeToken } from "../services/token.service.js";
 
 export async function logout(req, res) {
-  const token = req.cookies.refresh_token;
+  try {
+    const userId = req.user.id;
+    const token = req.cookies.refresh_token;
+
+    // delete refresh token from DB
+    await prisma.refresh_token.delete({
+      where: { userId },
+    });
+ 
+    if (token) await revokeToken(token);
+
+    res.clearCookie("refresh_token");
+      res.json({
+        success: true,
+        message: "Logged out successfully",
+      });
+  } catch (err) {
+    res.status(500).json({ message: "Logout failed" });
+  }
+  
+  // const userId = req.user.id;
 
   // console.log(`token on log out: ${token}`);
   // res.end("done");
-  if (token) await revokeToken(token);
 
-  res.clearCookie("refresh_token");
-  res.json({ message: "Logged out" });
-}
+//   res.json({ message: "Logged out" });
+// }
 
 // async function deleteUserToken (req, res) {
 //   // delete user record
@@ -34,4 +52,4 @@ export async function logout(req, res) {
 //     }
 //     res.status(500).json({ message: error.message });
 //   }
-// }
+}

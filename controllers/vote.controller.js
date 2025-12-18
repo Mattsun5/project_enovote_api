@@ -80,6 +80,7 @@ export const vote = async (req, res) => {
                 candidateId: vote.candidateId,
                 candidateName: `${vote.candidate.user.f_name} ${vote.candidate.user.l_name}`,
                 party: vote.candidate.party,
+                avatar: vote.candidate.avatar,
             },
         });
 
