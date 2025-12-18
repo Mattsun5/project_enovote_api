@@ -55,13 +55,13 @@ async function updateUser (req, res) {
 
     const updated = await prisma.user.update({
       where: { id },
-      data: req.body // example: { f_name: "John", l_name: "Doe" }
+      // data: req.body // example: { f_name: "John", l_name: "Doe" }
       // to update specific data
-      // data: {
-      //   f_name: req.body.f_name,
-      //   l_name: req.body.l_name,
-      //   status: req.body.status
-      // }
+      data: {
+        f_name: req.body.f_name,
+        l_name: req.body.l_name,
+        // status: req.body.status
+      }
     });
 
     res.json({
