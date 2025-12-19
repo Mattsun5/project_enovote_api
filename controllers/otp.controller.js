@@ -22,13 +22,13 @@ export const sendOtp = async (email) => {
             },
         });
 
-        transporter.verify((error, success) => {
-            if (error) {
-                console.error("SMTP VERIFY FAILED:", error);
-            } else {
-                console.log("SMTP SERVER READY");
-            }
-            });
+        // transporter.verify((error, success) => {
+        //     if (error) {
+        //         console.error("SMTP VERIFY FAILED:", error);
+        //     } else {
+        //         console.log("SMTP SERVER READY");
+        //     }
+        //     });
 
 
             //   await transporter.sendMail({
