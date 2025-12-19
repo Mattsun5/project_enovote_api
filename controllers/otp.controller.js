@@ -22,18 +22,18 @@ export const sendOtp = async (email) => {
             },
         });
 
-        // transporter.verify((error, success) => {
-        //     if (error) {
-        //         console.error("SMTP VERIFY FAILED:", error);
-        //     } else {
-        //         console.log("SMTP SERVER READY");
-        //     }
-        //     });
+        transporter.verify((error, success) => {
+            if (error) {
+                console.error("SMTP VERIFY FAILED:", error);
+            } else {
+                console.log("SMTP SERVER READY:", success);
+            }
+            });
 
 
-            //   await transporter.sendMail({
-            await resend.emails.send({
-                from: `E-VOTE <no-reply@https://e-vote-9css.onrender.com>`,
+              await transporter.sendMail({
+            // await resend.emails.send({
+                from: `E-VOTE <no-reply@e-vote>`,
                 to: email,
                 subject: "Verify your email - E-VOTE SYSTEM",
                 html: otpEmailTemplate({ otp })
