@@ -33,7 +33,7 @@ export const sendOtp = async (email) => {
 
             //   await transporter.sendMail({
             await resend.emails.send({
-                from: `"E-VOTE <no-reply@evote.com>"`,
+                from: `E-VOTE <no-reply@evote.com>`,
                 to: email,
                 subject: "Verify your email - E-VOTE SYSTEM",
                 html: otpEmailTemplate({ otp })
