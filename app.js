@@ -38,7 +38,7 @@ const server = http.createServer(app);
 const io = new Server(server, {
   cors: {
     origin: "https://e-vote-sandy.vercel.app",
-    transports: ["polling"], //for vercel
+    // transports: ["polling"], //for vercel
     credentials: true
   },
   // path: "/socket.io/",
