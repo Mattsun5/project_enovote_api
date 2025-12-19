@@ -30,14 +30,21 @@ export const sendOtp = async (email) => {
             }
             });
 
-
-              await transporter.sendMail({
+            await new Promise((resolve, reject) => {
+              transporter.sendMail({
             // await resend.emails.send({
                 from: `E-VOTE <no-reply@e-vote>`,
                 to: email,
                 subject: "Verify your email - E-VOTE SYSTEM",
                 html: otpEmailTemplate({ otp })
-            });
+            }, (err, info) => {
+            if (err) {
+                reject(err);
+            } else {
+                resolve(info);
+            }}
+            );
+        })
     } catch (err) {
     console.error("OTP ERROR:", err);
     throw err;
