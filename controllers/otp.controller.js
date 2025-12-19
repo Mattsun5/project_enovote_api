@@ -1,29 +1,47 @@
 import { prisma } from "../lib/prisma.js";
 import { transporter } from "../utils/mailer.js";
 import { otpEmailTemplate } from "../utils/otpEmailTemplate.js";
+import { Resend } from "resend";
+
+export const resend = new Resend(process.env.RESEND_API_KEY);
 
 export const sendOtp = async (email) => {
-  const otp = Math.floor(1000 + Math.random() * 9000).toString();
-  const expiresAt = new Date(Date.now() + 5 * 60 * 1000);
+    try {
+        const otp = Math.floor(1000 + Math.random() * 9000).toString();
+        const expiresAt = new Date(Date.now() + 5 * 60 * 1000);
 
-  await prisma.email_otp.deleteMany({ where: { email } });
+        await prisma.email_otp.deleteMany({ where: { email } });
 
-  await prisma.email_otp.create({
-    data: {
-      email,
-      otp,
-      expiresAt,
-      lastSentAt: new Date(),
-      attempts: 0,
-    },
-  });
+        await prisma.email_otp.create({
+            data: {
+            email,
+            otp,
+            expiresAt,
+            lastSentAt: new Date(),
+            attempts: 0,
+            },
+        });
 
-  await transporter.sendMail({
-    from: `"E-VOTE SYSTEM"`,
-    to: email,
-    subject: "Verify your email - E-VOTE SYSTEM",
-    html: otpEmailTemplate({ otp })
-  });
+        transporter.verify((error, success) => {
+            if (error) {
+                console.error("SMTP VERIFY FAILED:", error);
+            } else {
+                console.log("SMTP SERVER READY");
+            }
+            });
+
+
+            //   await transporter.sendMail({
+            await resend.emails.send({
+                from: `"E-VOTE SYSTEM"`,
+                to: email,
+                subject: "Verify your email - E-VOTE SYSTEM",
+                html: otpEmailTemplate({ otp })
+            });
+    } catch (err) {
+    console.error("OTP ERROR:", err);
+    throw err;
+  }
 };
 
 export const resendOtp = async (req, res) => {

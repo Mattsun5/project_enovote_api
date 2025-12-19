@@ -113,6 +113,8 @@ async function createNewUser (req, res) {
       return res.status(409).json({ message: "Email already exists" });
     }
 
+    await sendOtp(email);
+    
     const hashed = await bcrypt.hash(password, SALT_ROUNDS);
 
     const newUser = await prisma.user.create({
@@ -126,7 +128,7 @@ async function createNewUser (req, res) {
       },
     });
 
-    await sendOtp(email);
+    
 
     return res.status(201).json({
       newUser,
