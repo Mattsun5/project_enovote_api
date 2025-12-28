@@ -21,6 +21,27 @@ export async function getLiveResults(req, res) {
           _count: { candidateId: true }
         });
 
+        // candidates
+        // const candidateIds = await prisma.candidate.groupBy({
+        //   by: ["candidateId"],
+        //   where: { electionId },
+        // });
+
+        const candidates = await prisma.candidate.findMany({
+        where: { electionId },
+        select: {
+            id: true,
+            party: true,
+            user: {
+            select: {
+                f_name: true,
+                l_name: true,
+            },
+            },
+        },
+        });
+
+
         const totalVotes = groupedVotes.reduce(
             (sum, r) => sum + r._count.candidateId,
             0
@@ -74,6 +95,20 @@ export async function getLiveResults(req, res) {
                 },
             },
         });
+
+        const results = candidates.map((c) => {
+            const vote = groupedVotes.find(v => v.candidateId === c.id);
+
+            const votes = vote ? vote._count.candidateId : 0;
+
+            return {
+                candidateId: c.id,
+                votes,
+                name: `${c.user.f_name} ${c.user.l_name}`,
+                party: c.party || "Independent",
+            };
+            });
+
         // console.log(JSON.stringify(userVote, null, 2));
     
         res.json({
@@ -83,10 +118,7 @@ export async function getLiveResults(req, res) {
             totalEligibleVoters,
             turnoutPercentage,
             leadingCandidate,
-            results: groupedVotes.map(r => ({
-                candidateId: r.candidateId,
-                votes: r._count.candidateId,
-            })),
+            results,
             userVote: userVote
                 ? {
                     hasVoted: true,

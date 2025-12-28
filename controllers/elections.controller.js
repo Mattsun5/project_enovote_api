@@ -71,8 +71,18 @@ async function allElections (req, res) {
         endAt: { gte: new Date() },
       },
       orderBy: { startAt: "desc" },
+      include: {
+        candidate: {
+          include: {
+            user: {
+              select: { f_name: true, l_name: true }
+            },
+            election_vote: true
+          }
+        },
+        election_vote: true
+      }
     });
-
     res.json({ elections });
   } catch (err) {
     console.error("GET /elections ERROR:", err);
