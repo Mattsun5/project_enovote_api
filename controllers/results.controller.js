@@ -85,6 +85,7 @@ export async function getLiveResults(req, res) {
                 candidate: {
                 select: {
                     party: true,
+                    avatar: true,
                     user: {
                     select: {
                         f_name: true,
@@ -127,6 +128,7 @@ export async function getLiveResults(req, res) {
                     votedAt: userVote.createdAt,
                     candidateName: `${userVote.candidate.user.f_name} ${userVote.candidate.user.l_name}`,
                     party: userVote.candidate.party,
+                    avatar: userVote.candidate.avatar,
                 }
                 : {
                     hasVoted: false,

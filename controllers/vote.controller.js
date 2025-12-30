@@ -42,6 +42,7 @@ export const vote = async (req, res) => {
             select: {
                 id: true,
                 party: true,
+                avatar: true,
                 user: {
                 select: {
                     f_name: true,
