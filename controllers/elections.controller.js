@@ -43,6 +43,7 @@ async function getElection (req, res) {
       party: c.party,
       manifesto: c.manifesto,
       user: c.user,
+      avatar: c.avatar,
       votes: c.election_vote.length
     }));
 
