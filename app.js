@@ -25,6 +25,7 @@ const __dirname = path.dirname(__filename);
 const allowedOrigins = [
   "http://localhost:5173",
   "http://localhost:3000",
+  "https://e-vote.com.ng",
   "https://e-vote-sandy.vercel.app"
 ];
 
@@ -43,7 +44,7 @@ const server = http.createServer(app);
 //   },
 const io = new Server(server, {
   cors: {
-    origin: "https://e-vote-sandy.vercel.app",
+    origin: allowedOrigins,
     transports: ["polling"], //for vercel
     credentials: true
   },
